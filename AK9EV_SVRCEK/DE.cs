@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,15 @@ using static AK9EV_SVRCEK.PSO;
 
 namespace AK9EV_SVRCEK
 {
-    public class DE_Rand1Bin
+    public class DE
     {
+        public enum DEType
+        {
+            Rand1Bin,
+            Best1Bin
+        }
+
+
         public Dimenzion Dimenzion { get; set; }
         public int FES { get; set; }
         public int Iterations { get; set; }
@@ -20,9 +28,12 @@ namespace AK9EV_SVRCEK
         private int PopulationSize { get; set; }
         public double Fitness { get; set; }
 
+        public DEType Type { get; set; }
+
         //maxGen 10^3 - 10^6 viz prednasky
-        public DE_Rand1Bin(Dimenzion dimenzion, int fes = 2000, int iterations = 30, double f = 0.8, double cr = 0.9, int maxGen = 100000)
+        public DE(DEType type, Dimenzion dimenzion, int fes = 2000, int iterations = 30, double f = 0.8, double cr = 0.9, int maxGen = 100000)
         {
+            Type = type;
             Dimenzion = dimenzion;
             FES = fes * (int)dimenzion;
             Iterations = iterations;
@@ -78,7 +89,7 @@ namespace AK9EV_SVRCEK
                         {
                             EVRandom random = new EVRandom();
 
-                            double[] r1 = Population[random.Next(PopulationSize)];
+                            double[] r1 = Type == DEType.Rand1Bin ? Population[random.Next(PopulationSize)] : BestVector(fce);
                             double[] r2 = Population[random.Next(PopulationSize)];
                             double[] r3 = Population[random.Next(PopulationSize)];
 
@@ -116,5 +127,24 @@ namespace AK9EV_SVRCEK
             }
             return retLst;
         }
+
+        private double[] BestVector(int fce)
+        {
+            double bestFitness = double.MaxValue;
+            double[] retVal = null;
+
+            foreach(var vector in Population)
+            {
+                double actFitness = FitnessFunctions.EvaluateFitness(vector, fce);
+                if(actFitness < bestFitness)
+                {
+                    bestFitness = actFitness;
+                    //klon
+                    retVal = vector.ToArray();
+                }
+            }
+            return retVal;
+        }
+
     }
 }

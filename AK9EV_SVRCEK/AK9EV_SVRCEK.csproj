@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DE_Rand1Bin.cs" />
+    <Compile Include="DE.cs" />
     <Compile Include="Dimenzion.cs" />
     <Compile Include="EVRandom.cs" />
     <Compile Include="FitnessFunctions.cs" />
