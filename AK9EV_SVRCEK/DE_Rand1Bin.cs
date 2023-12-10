@@ -88,7 +88,12 @@ namespace AK9EV_SVRCEK
                             for (int j = 0; j < (int)Dimenzion; j++)
                             {
                                 if (random.NextDouble() < CR)
-                                    newVector[j] = r1[j] + F * (r2[j] - r3[j]);
+                                {
+                                    //newVector[j] = r1[j] + F * (r2[j] - r3[j]);
+                                    //hranice
+                                    var tempValue = r1[j] + F * (r2[j] - r3[j]);
+                                    newVector[j] = Math.Max(Math.Min(tempValue, 100.0), -100.0);
+                                }
                                 else
                                     newVector[j] = actualVector[j];
                             }
@@ -100,8 +105,8 @@ namespace AK9EV_SVRCEK
                             if (newFitness < actulFitness)
                             {
                                 Population[i] = newVector;
-                                if (newFitness < bestFitness)
-                                    bestFitness = newFitness;
+                                //if (newFitness < bestFitness)
+                                bestFitness = newFitness;
                             }
                         }
                     }

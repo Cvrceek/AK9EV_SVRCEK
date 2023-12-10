@@ -18,7 +18,7 @@ namespace AK9EV_SVRCEK
             //var pso10 = pso.Run();
 
             DE_Rand1Bin rand = new DE_Rand1Bin(Dimenzion.Thirty);
-            rand.Run();
+            var rand30 = rand.Run();
         }
     }
 }
