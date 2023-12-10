@@ -10,8 +10,15 @@ namespace AK9EV_SVRCEK
     {
         static void Main(string[] args)
         {
-            PSO pso = new PSO(Dimenzion.Ten);
-            pso.Run();
+            //PSO pso = new PSO(Dimenzion.Thirty);
+            //var pso30 = pso.Run();
+            //pso = new PSO(Dimenzion.Two);
+            //var pso2 = pso.Run();
+            //pso = new PSO(Dimenzion.Ten);
+            //var pso10 = pso.Run();
+
+            DE_Rand1Bin rand = new DE_Rand1Bin(Dimenzion.Thirty);
+            rand.Run();
         }
     }
 }

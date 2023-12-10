@@ -31,7 +31,7 @@ namespace AK9EV_SVRCEK
                 SwarmSize = swarmSize;
 
                 Particles = new List<Particle>();
-                for(int i = 0; i < swarmSize; i++)
+                for (int i = 0; i < swarmSize; i++)
                 {
                     var particle = new Particle()
                     {
@@ -40,7 +40,7 @@ namespace AK9EV_SVRCEK
                         Position = new double[dimenzion],
                         Fitness = double.MaxValue
                     };
-                    for(int j = 0; j < dimenzion; j++)
+                    for (int j = 0; j < dimenzion; j++)
                     {
                         particle.Position[j] = random.EVNextDouble();
                     }
@@ -59,7 +59,7 @@ namespace AK9EV_SVRCEK
         public double C1 { get; set; }
         public double C2 { get; set; }
         public int MaxVelocity { get; set; }
-        public PSO(Dimenzion dimenzion, int fes = 2000, int iterations = 30, double c1 = 1.49618, double c2= 1.49618, double weight = 0.7298, int maxVelocity=2)
+        public PSO(Dimenzion dimenzion, int fes = 2000, int iterations = 30, double c1 = 1.49618, double c2 = 1.49618, double weight = 0.7298, int maxVelocity = 2)
         {
             Dimenzion = dimenzion;
             Weight = weight;
@@ -82,80 +82,74 @@ namespace AK9EV_SVRCEK
             Iterations = iterations;
         }
 
-        public void Run()
+        public List<Result> Run()
         {
             EVRandom random = new EVRandom();
-            
-            for (int iteraiton = 0; iteraiton < Iterations; iteraiton++)
+            List<Result> retLst = new List<Result>();
+
+            for (int fce = 0; fce < 3; fce++)
             {
-                int FEScounter = 0;
-
-                switch (this.Dimenzion)
+                Result result = new Result();
+                result.Function = fce.ToString();
+                for (int iteraiton = 0; iteraiton < Iterations; iteraiton++)
                 {
-                    case Dimenzion.Two:
-                        SwarmItems = new Swarm(10, 2);
-                        break;
-                    case Dimenzion.Ten:
-                        SwarmItems = new Swarm(20, 10);
-                        break;
-                    case Dimenzion.Thirty:
-                        SwarmItems = new Swarm(50, 30);
-                        break;
-                }
+                    int FEScounter = 0;
 
-                while (FEScounter < FES)
-                {
-                    foreach (var particle in SwarmItems.Particles)
+                    switch (this.Dimenzion)
                     {
-                        for (int i = 0; i < particle.Position.Length && FEScounter < FES; i++)
+                        case Dimenzion.Two:
+                            SwarmItems = new Swarm(10, 2);
+                            break;
+                        case Dimenzion.Ten:
+                            SwarmItems = new Swarm(20, 10);
+                            break;
+                        case Dimenzion.Thirty:
+                            SwarmItems = new Swarm(50, 30);
+                            break;
+                    }
+
+                    while (FEScounter < FES)
+                    {
+                        foreach (var particle in SwarmItems.Particles)
                         {
-                            //vzorecek na rychlot
-                            particle.Speed = Weight * particle.Speed +
-                                         C1 * random.NextDouble() * (particle.Best[i] - particle.Position[i]) +
-                                         C2 * random.NextDouble() * (SwarmItems.Best[i] - particle.Position[i]);
-                            if (particle.Speed > MaxVelocity || particle.Speed < -MaxVelocity)
+                            for (int i = 0; i < particle.Position.Length && FEScounter < FES; i++)
                             {
-                                particle.Speed = Math.Max(-MaxVelocity, Math.Min(MaxVelocity, particle.Speed));
+                                //vzorecek na rychlot
+                                particle.Speed = Weight * particle.Speed +
+                                             C1 * random.NextDouble() * (particle.Best[i] - particle.Position[i]) +
+                                             C2 * random.NextDouble() * (SwarmItems.Best[i] - particle.Position[i]);
+                                if (particle.Speed > MaxVelocity || particle.Speed < -MaxVelocity)
+                                {
+                                    particle.Speed = Math.Max(-MaxVelocity, Math.Min(MaxVelocity, particle.Speed));
+                                }
+                                //pozicovani
+                                double newPosition = particle.Position[i] + particle.Speed;
+                                particle.Position[i] = Math.Max(-100, Math.Min(100, newPosition));
                             }
-                            //pozicovani
-                            double newPosition = particle.Position[i] + particle.Speed;
-                            particle.Position[i] = Math.Max(-100, Math.Min(100, newPosition));
+
+                            double fitness = FitnessFunctions.EvaluateFitness(particle.Position, fce);
                             FEScounter++;
-                        }
+                            if (fitness < particle.Fitness)
+                            {
+                                particle.Fitness = fitness;
+                                Array.Copy(particle.Position, particle.Best, particle.Position.Length);
+                            }
 
-                        double fitness = EvaluateFitness(particle.Position);
-
-                        if (fitness < particle.Fitness)
-                        {
-                            particle.Fitness = fitness;
-                            Array.Copy(particle.Position, particle.Best, particle.Position.Length);
-                        }
-
-                        if (fitness < SwarmItems.Fitness)
-                        {
-                            SwarmItems.Fitness = fitness;
-                            Array.Copy(particle.Position, SwarmItems.Best, particle.Position.Length);
+                            if (fitness < SwarmItems.Fitness)
+                            {
+                                SwarmItems.Fitness = fitness;
+                                Array.Copy(particle.Position, SwarmItems.Best, particle.Position.Length);
+                            }
                         }
                     }
+                    result.Fitness.Add(SwarmItems.Fitness);
                 }
-
-                Console.WriteLine(SwarmItems.Best);
-                Console.WriteLine(SwarmItems.Fitness);
-                Console.WriteLine();
+                retLst.Add(result);
             }
+            return retLst;
         }
 
 
-          private double EvaluateFitness(double[] position)
-        {
-            // Hodnoty x a y z pole position
-            double x = position[0];
-            double y = position[1];
-
-            // Kvadratická fitness funkce
-            double fitness = Math.Pow(x - 3, 2) + Math.Pow(y + 2, 2);
-
-            return fitness;
-        }
+       
     }
 }

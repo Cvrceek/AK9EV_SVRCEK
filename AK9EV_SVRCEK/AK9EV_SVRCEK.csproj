@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DE_Rand1Bin.cs" />
     <Compile Include="Dimenzion.cs" />
     <Compile Include="EVRandom.cs" />
+    <Compile Include="FitnessFunctions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSO.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="SOMA_ATO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
