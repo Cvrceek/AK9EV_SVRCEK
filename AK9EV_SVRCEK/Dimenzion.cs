@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace AK9EV_SVRCEK
 {
-    internal class Program
+    public enum Dimenzion
     {
-        static void Main(string[] args)
-        {
-            PSO pso = new PSO(Dimenzion.Ten);
-            pso.Run();
-        }
+        Two = 2,
+        Ten = 10,
+        Thirty = 30
     }
 }
