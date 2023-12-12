@@ -41,7 +41,10 @@ namespace AK9EV_SVRCEK
             CR = cr;
             MaxGenerations = maxGen;
             Fitness = double.MaxValue;
+        }
 
+        private void SetPopulation()
+        {
             Population = new List<double[]>();
 
             switch (this.Dimenzion)
@@ -70,10 +73,12 @@ namespace AK9EV_SVRCEK
             }
         }
 
+
+
         public List<Result> Run()
         {
             List<Result> retLst = new List<Result>();
-            for (int fce = 0; fce < 3; fce++)
+            for (int fce = 0; fce < 5; fce++)
             {
                 Result result = new Result();
                 result.Function = fce.ToString();
@@ -82,10 +87,11 @@ namespace AK9EV_SVRCEK
                 {
                     int FESCounter = 0;
                     double bestFitness = double.MaxValue;
+                    SetPopulation();
 
-                    for (int gen = 0; gen < MaxGenerations && FESCounter < FES; gen++)
+                    for (int gen = 0; gen < MaxGenerations && FESCounter < FES; ++gen)
                     {
-                        for (int i = 0; i < PopulationSize && FESCounter < FES; i++)
+                        for (int i = 0; i < PopulationSize && FESCounter < FES; ++i)
                         {
                             EVRandom random = new EVRandom();
 
@@ -103,7 +109,7 @@ namespace AK9EV_SVRCEK
                                     //newVector[j] = r1[j] + F * (r2[j] - r3[j]);
                                     //hranice
                                     var tempValue = r1[j] + F * (r2[j] - r3[j]);
-                                    newVector[j] = Math.Max(Math.Min(tempValue, 100.0), -100.0);
+                                    newVector[j] = Helper.BoundsCheck(tempValue);
                                 }
                                 else
                                     newVector[j] = actualVector[j];

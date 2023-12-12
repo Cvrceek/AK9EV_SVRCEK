@@ -87,7 +87,7 @@ namespace AK9EV_SVRCEK
             EVRandom random = new EVRandom();
             List<Result> retLst = new List<Result>();
 
-            for (int fce = 0; fce < 3; fce++)
+            for (int fce = 0; fce < 6; fce++)
             {
                 Result result = new Result();
                 result.Function = fce.ToString();
@@ -124,7 +124,9 @@ namespace AK9EV_SVRCEK
                                 }
                                 //pozicovani
                                 double newPosition = particle.Position[i] + particle.Speed;
-                                particle.Position[i] = Math.Max(-100, Math.Min(100, newPosition));
+                                //particle.Position[i] =    Math.Max(-100, Math.Min(100, newPosition));
+                                particle.Position[i] = Helper.BoundsCheck(newPosition);
+
                             }
 
                             double fitness = FitnessFunctions.EvaluateFitness(particle.Position, fce);
