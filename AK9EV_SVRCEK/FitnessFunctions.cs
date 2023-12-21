@@ -23,6 +23,7 @@ namespace AK9EV_SVRCEK
                     return FitnessFunctions.ChatGPTGen1(position);
                 case 2:
                     return FitnessFunctions.Rastrigin(position);
+                    //return FitnessFunctions.Sphere(position);
                 case 3:
                     return FitnessFunctions.Schwefel(position);
                 case 4:
