@@ -138,6 +138,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSO.cs" />
     <Compile Include="Result.cs" />
+    <Compile Include="SOMA.cs" />
     <Compile Include="SOMA_ATO.cs" />
   </ItemGroup>
   <ItemGroup>

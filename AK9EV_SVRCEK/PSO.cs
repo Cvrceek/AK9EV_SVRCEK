@@ -87,7 +87,7 @@ namespace AK9EV_SVRCEK
             EVRandom random = new EVRandom();
             List<Result> retLst = new List<Result>();
 
-            for (int fce = 0; fce < 6; fce++)
+            for (int fce = 0; fce < 5; fce++)
             {
                 Result result = new Result();
                 result.Function = fce.ToString();
