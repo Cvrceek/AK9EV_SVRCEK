@@ -19,18 +19,25 @@ namespace AK9EV_SVRCEK
 
 
             ////////////////////////////
-            PSO pso = new PSO(Dimenzion.Thirty);
-            var pso30 = pso.Run();
-            pso = new PSO(Dimenzion.Two);
-            var pso2 = pso.Run();
-            pso = new PSO(Dimenzion.Ten);
-            var pso10 = pso.Run();
+            //PSO pso = new PSO(Dimenzion.Thirty);
+            //var pso30 = pso.Run();
+            //pso = new PSO(Dimenzion.Two);
+            //var pso2 = pso.Run();
+            //pso = new PSO(Dimenzion.Ten);
+            //var pso10 = pso.Run();
 
-            DE rand = new DE(DE.DEType.Rand1Bin, Dimenzion.Thirty);
-            var rand30 = rand.Run();
+            //DE rand = new DE(DE.DEType.Rand1Bin, Dimenzion.Thirty);
+            //var rand30 = rand.Run();
 
-            rand = new DE(DE.DEType.Best1Bin, Dimenzion.Thirty);
-            var randjj = rand.Run();
+            //rand = new DE(DE.DEType.Best1Bin, Dimenzion.Thirty);
+            //var randjj = rand.Run();
+
+
+            SOMA soma = new SOMA(Dimenzion.Thirty, SOMA.SomaType.AllToOne);
+            var xx = soma.Run();
+
+            soma = new SOMA(Dimenzion.Thirty, SOMA.SomaType.AllToAll);
+            var yy = soma.Run();
         }
 
 
