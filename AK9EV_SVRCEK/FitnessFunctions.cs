@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
+using System.Runtime.Remoting;
 
 namespace AK9EV_SVRCEK
 {
@@ -28,8 +29,46 @@ namespace AK9EV_SVRCEK
                     return FitnessFunctions.Schwefel(position);
                 case 4:
                     return FitnessFunctions.Levy(position);
-                //case 5:
-                //    return FitnessFunctions.My5(position);
+                case 5:
+                    return FitnessFunctions.Sphere(position);
+                    case 6:
+                    return FitnessFunctions.SchwefelNo226(position);
+                case 7:
+                    return FitnessFunctions.ChungReynolds(position);
+                case 8:
+                    return FitnessFunctions.EggHolder(position);
+                case 9:
+                    return FitnessFunctions.Quartic(position);
+                case 10:
+                    return FitnessFunctions.YaoLiu09(position);
+                case 11:
+                    return FitnessFunctions.BentCigar(position);
+                case 12:
+                    return FitnessFunctions.Qing(position);
+                case 13:
+                    return FitnessFunctions.Mishra11(position);
+                case 14:
+                    return FitnessFunctions.Mishra07(position);
+                case 15:
+                    return FitnessFunctions.DixonPrice(position);
+                case 16:
+                    return FitnessFunctions.Alpine01(position);
+                case 17:
+                    return FitnessFunctions.StyblinskiTang(position);
+                case 18:
+                    return FitnessFunctions.HyperEllipsoid(position);
+                case 19:
+                    return FitnessFunctions.DebsNo1(position);
+                case 20:
+                    return FitnessFunctions.Trid(position);
+                case 21:
+                    return FitnessFunctions.Rana(position);
+                case 22:
+                    return FitnessFunctions.Plateau(position);
+                case 23:
+                    return FitnessFunctions.CosineMixture(position);
+                case 24:
+                    return FitnessFunctions.Michalewicz(position);
                 default:
                     throw new NotImplementedException();
             }
@@ -37,7 +76,7 @@ namespace AK9EV_SVRCEK
 
         public static void DrawCharts()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 25; i++)
             {
                 var plotCube = new PlotCube();
                 List<double> xCoor = new List<double>();
@@ -193,6 +232,271 @@ namespace AK9EV_SVRCEK
                 sum += x[i] * x[i];
             }
             return sum;
+        }
+        public static double SchwefelNo226(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum -= x[i] * Math.Sin(Math.Sqrt(Math.Abs(x[i])));
+            }
+
+            return sum;
+        }
+        public static double ChungReynolds(double[] x)
+        {
+            int dimension = x.Length;
+            double sumOfSquares = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sumOfSquares += Math.Pow(x[i], 2);
+            }
+
+            return Math.Pow(sumOfSquares, 2);
+        }
+        public static double EggHolder(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension - 1; i++)
+            {
+                double term1 = -x[i] * Math.Sin(Math.Sqrt(Math.Abs(x[i] - x[i + 1] - 47)));
+                double term2 = -(x[i + 1] + 47) * Math.Sin(Math.Sqrt(Math.Abs(0.5 * x[i] + x[i + 1] + 47)));
+
+                sum += term1 + term2;
+            }
+
+            return sum;
+        }
+        public static double Quartic(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += (i + 1) * Math.Pow(x[i], 4);
+            }
+
+            return sum;
+        }
+        public static double YaoLiu09(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Pow(x[i], 2) - 10 * Math.Cos(2 * Math.PI * x[i]) + 10;
+            }
+
+            return sum;
+        }
+        public static double BentCigar(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 2; i < dimension; i++)
+            {
+                sum += Math.Pow(x[i], 2);
+            }
+
+            return Math.Pow(x[0], 2) + 1e6 * sum;
+        }
+        public static double Mishra11(double[] x)
+        {
+            int dimension = x.Length;
+
+            double sum1 = 0.0;
+            double product = 1.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum1 += Math.Abs(x[i]);
+                product *= Math.Abs(x[i]);
+            }
+
+            double sum2 = Math.Pow(product, 1.0 / dimension);
+
+            return Math.Pow((sum1 / dimension) - sum2, 2);
+        }
+         private static int Factorial(int n)
+        {
+            if (n == 0 || n == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return n * Factorial(n - 1);
+            }
+        }
+        public static double Mishra07(double[] x)
+        {
+            int dimension = x.Length;
+            double product = 1.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                product *= x[i];
+            }
+
+            int factorialN = Factorial(dimension);
+
+            return Math.Pow(product - factorialN, 2);
+        }
+        public static double DixonPrice(double[] x)
+        {
+            double result = Math.Pow(x[0] - 1, 2);
+
+            for (int i = 1; i < x.Length; i++)
+            {
+                double term = i * (2 * Math.Pow(x[i], 2) - x[i - 1]);
+                result += Math.Pow(term, 2);
+            }
+
+            return result;
+        }
+        public static double Alpine01(double[] x)
+        {
+            double sum = 0.0;
+            int dimension = x.Length;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Abs(x[i] * Math.Sin(x[i]) + 0.1 * x[i]);
+            }
+
+            return sum;
+        }
+        public static double StyblinskiTang(double[] x)
+        {
+            double sum = 0.0;
+            int dimension = x.Length;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                double xi = x[i];
+                sum += Math.Pow(xi, 4) - 16 * Math.Pow(xi, 2) + 5 * xi;
+            }
+
+            return 0.5 * sum; 
+        }
+        public static double HyperEllipsoid(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Pow(x[i], 2);
+            }
+
+            return sum;
+        }
+        public static double DebsNo1(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Pow(Math.Sin(5 * Math.PI * x[i]), 2);
+            }
+
+            return sum;
+        }
+        public static double Trid(double[] x)
+        {
+            int dimension = x.Length;
+            double sum1 = 0.0;
+            double sum2 = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum1 += Math.Pow(x[i] - 1, 2);
+            }
+
+            for (int i = 1; i < dimension; i++)
+            {
+                sum2 += x[i - 1] * x[i];
+            }
+
+            return sum1 - sum2;
+        }
+        public static double Rana(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension - 1; i++)
+            {
+                double term1 = x[i] * Math.Sin(Math.Sqrt(Math.Abs(x[i + 1] + 1 + x[i]))) * Math.Cos(Math.Sqrt(Math.Abs(x[i] - x[i + 1] + 1)));
+                double term2 = (x[i + 1] + 1) * Math.Cos(Math.Sqrt(Math.Abs(x[i] - x[i + 1] + 1)));
+                sum += term1 + term2;
+            }
+
+            return sum;
+        }
+        public static double Qing(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Pow(x[i] * x[i] - (i + 1), 2);
+            }
+
+            return sum;
+        }
+        public static double Plateau(double[] x)
+        {
+            int dimension = x.Length;
+            double sum = 0.0;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                sum += Math.Abs(x[i]);
+            }
+
+            return 30.0 + sum;
+        }
+        public static double CosineMixture(double[] x)
+        {
+            int dimension = x.Length;
+
+            double sum1 = 0.0;
+            for (int i = 0; i < dimension; i++)
+            {
+                sum1 += Math.Cos(5.0 * Math.PI * x[i]);
+            }
+
+            double sum2 = 0.0;
+            for (int i = 0; i < dimension; i++)
+            {
+                sum2 += Math.Pow(x[i], 2);
+            }
+            return 0.1 * sum1 - sum2;
+        }
+        public static double Michalewicz(double[] x)
+        {
+            double sum = 0.0;
+            int dimension = x.Length;
+            double m = 10.0; 
+
+            for (int i = 0; i < dimension; i++)
+            {
+                double xi = x[i];
+                sum += Math.Sin(xi) * Math.Pow(Math.Sin(((i + 1) * xi * xi) / Math.PI), 2 * m);
+            }
+
+            return -sum; 
         }
     }
 }

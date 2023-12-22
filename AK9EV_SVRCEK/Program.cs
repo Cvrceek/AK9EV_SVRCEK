@@ -13,84 +13,68 @@ namespace AK9EV_SVRCEK
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            FitnessFunctions.DrawCharts();
+            //FitnessFunctions.DrawCharts();
+
+            Task<List<Result>> deRand_2 = DERand(Dimenzion.Two);
+            Task<List<Result>> deRand_10 = DERand(Dimenzion.Ten);
+            Task<List<Result>> deRand_30 = DERand(Dimenzion.Thirty);
+
+            Task<List<Result>> deBest_2 =  DEBest(Dimenzion.Two);
+            Task<List<Result>> deBest_10 = DEBest(Dimenzion.Ten);
+            Task<List<Result>> deBest_30 = DEBest(Dimenzion.Thirty);
+
+            Task<List<Result>> pso_2 = PSO_(Dimenzion.Two);
+            Task<List<Result>> pso_10 = PSO_(Dimenzion.Ten);
+            Task<List<Result>> pso_30 = PSO_(Dimenzion.Thirty);
+
+            Task<List<Result>> somaAllToAll_2 =  SomaAllToAll(Dimenzion.Two);
+            Task<List<Result>> somaAllToAll_10 = SomaAllToAll(Dimenzion.Ten);
+            Task<List<Result>> somaAllToAll_30 = SomaAllToAll(Dimenzion.Thirty);
+
+            Task<List<Result>> somaAllToOne_2 =  SomaAllToOne(Dimenzion.Two);
+            Task<List<Result>> somaAllToOne_10 = SomaAllToOne(Dimenzion.Ten);
+            Task<List<Result>> somaAllToOne_30 = SomaAllToOne(Dimenzion.Thirty);
+
+            var results = Task.WhenAll(deRand_2, deRand_10, /*deRand_30*/, deBest_2, deBest_10, /*deBest_30*/, pso_2, pso_10, /*pso_30*/, somaAllToAll_2, somaAllToAll_10, /*somaAllToAll_30*/,
+                somaAllToOne_2, somaAllToOne_10, /*somaAllToOne_30*/);
 
 
-            ////////////////////////////
-            //PSO pso = new PSO(Dimenzion.Thirty);
-            //var pso30 = pso.Run();
-            PSO pso = new PSO(Dimenzion.Two);
-            var pso2 = pso.Run();
-            pso = new PSO(Dimenzion.Ten);
-            var pso10 = pso.Run();
 
-            //Result psoRes = new Result();
-            ////vytvoreni hodnot do reportu
-            //for (int i = 0; i < pso2.Count; i++)
-            //{
-            //    psoRes.Fitness.Add((pso2[i].Fitness.Sum() + pso10[i].Fitness.Sum() + pso30[i].Fitness.Sum()) / 3);
-            //}
-
-
-
-            //DE rand = new DE(DE.DEType.Rand1Bin, Dimenzion.Thirty);
-            //var rand30 = rand.Run();
-            DE rand = new DE(DE.DEType.Rand1Bin, Dimenzion.Ten);
-            var rand10 = rand.Run();
-            rand = new DE(DE.DEType.Rand1Bin, Dimenzion.Two);
-            var rand2 = rand.Run();
-
-            //Result randRes = new Result();
-            ////vytvoreni hodnot do reportu
-            //for (int i = 0; i < rand30.Count; i++)
-            //{
-            //    randRes.Fitness.Add((rand10[i].Fitness.Sum() + rand2[i].Fitness.Sum() + rand30[i].Fitness.Sum()) / 3);
-            //}
-
-            //rand = new DE(DE.DEType.Best1Bin, Dimenzion.Thirty);
-            //var rand30B = rand.Run();
-            rand = new DE(DE.DEType.Best1Bin, Dimenzion.Ten);
-            var rand10B = rand.Run();
-            rand = new DE(DE.DEType.Best1Bin, Dimenzion.Two);
-            var rand2B = rand.Run();
-
-            //Result randBRes = new Result();
-            ////vytvoreni hodnot do reportu
-            //for (int i = 0; i < rand30B.Count; i++)
-            //{
-            //    randBRes.Fitness.Add((rand10B[i].Fitness.Sum() + rand2B[i].Fitness.Sum() + rand30B[i].Fitness.Sum()) / 3);
-            //}
-
-            //SOMA soma = new SOMA(Dimenzion.Thirty, SOMA.SomaType.AllToOne);
-            //var soma30 = soma.Run();
-            SOMA soma = new SOMA(Dimenzion.Ten, SOMA.SomaType.AllToOne);
-            var soma10 = soma.Run();
-            soma = new SOMA(Dimenzion.Two, SOMA.SomaType.AllToOne);
-            var soma2 = soma.Run();
-            //Result somaRes = new Result();
-            ////vytvoreni hodnot do reportu
-            //for (int i = 0; i < soma2.Count; i++)
-            //{
-            //    somaRes.Fitness.Add((soma2[i].Fitness.Sum() + soma10[i].Fitness.Sum() + soma30[i].Fitness.Sum()) / 3);
-            //}
-
-
-            //SOMA somaA = new SOMA(Dimenzion.Thirty, SOMA.SomaType.AllToAll);
-            //var soma30A = soma.Run();
-            SOMA somaA = new SOMA(Dimenzion.Ten, SOMA.SomaType.AllToAll);
-            var soma10A = somaA.Run();
-            somaA = new SOMA(Dimenzion.Two, SOMA.SomaType.AllToAll);
-            var soma2A = somaA.Run();
-
-            //Result somaResA = new Result();
-            ////vytvoreni hodnot do reportu
-            //for (int i = 0; i < soma2.Count; i++)
-            //{
-            //    somaResA.Fitness.Add((soma2A[i].Fitness.Sum() + soma10A[i].Fitness.Sum() + soma30A[i].Fitness.Sum()) / 3);
-            //}
         }
+
+
+        static async Task<List<Result>> SomaAllToAll(Dimenzion dimenzion)
+        {
+            SOMA soma = new SOMA(dimenzion, SOMA.SomaType.AllToAll);
+            return soma.Run();
+        }
+
+        static async Task<List<Result>> SomaAllToOne(Dimenzion dimenzion)
+        {
+            SOMA soma = new SOMA(dimenzion, SOMA.SomaType.AllToOne);
+            return soma.Run();
+        }
+
+        static async Task<List<Result>> PSO_(Dimenzion dimenzion)
+        {
+            PSO pso = new PSO(dimenzion);
+            return pso.Run();
+        }
+
+        static async Task<List<Result>> DERand(Dimenzion dimenzion)
+        {
+            DE de = new DE(DE.DEType.Rand1Bin, dimenzion);
+            return de.Run();
+        }
+
+        static async Task<List<Result>> DEBest(Dimenzion dimenzion)
+        {
+            DE de = new DE(DE.DEType.Best1Bin, dimenzion);
+            return de.Run();
+        }
+        
 
 
 

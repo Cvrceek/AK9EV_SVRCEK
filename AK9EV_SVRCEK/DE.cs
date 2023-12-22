@@ -78,7 +78,7 @@ namespace AK9EV_SVRCEK
         public List<Result> Run()
         {
             List<Result> retLst = new List<Result>();
-            for (int fce = 0; fce < 5; fce++)
+            for (int fce = 0; fce < 25; fce++)
             {
                 Result result = new Result();
                 result.Function = fce.ToString();
