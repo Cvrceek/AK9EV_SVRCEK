@@ -31,7 +31,7 @@ namespace AK9EV_SVRCEK
                     return FitnessFunctions.Levy(position);
                 case 5:
                     return FitnessFunctions.Sphere(position);
-                    case 6:
+                case 6:
                     return FitnessFunctions.SchwefelNo226(position);
                 case 7:
                     return FitnessFunctions.ChungReynolds(position);
