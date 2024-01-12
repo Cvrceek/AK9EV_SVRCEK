@@ -19,44 +19,44 @@ namespace AK9EV_SVRCEK
         {
             //FitnessFunctions.DrawCharts();
 
-            //var tasks = new List<Task<List<Result>>>
-            //{
-            //    Task.Run(() => DERand(Dimenzion.Two)),
-            //    Task.Run(() => DERand(Dimenzion.Ten)),
-            //    Task.Run(() => DERand(Dimenzion.Thirty)),
-            //    Task.Run(() => DEBest(Dimenzion.Two)),
-            //    Task.Run(() => DEBest(Dimenzion.Ten)),
-            //    Task.Run(() => DEBest(Dimenzion.Thirty)),
-            //    Task.Run(() => PSO_(Dimenzion.Two)),
-            //    Task.Run(() => PSO_(Dimenzion.Ten)),
-            //    Task.Run(() => PSO_(Dimenzion.Thirty)),
-            //    Task.Run(() => SomaAllToAll(Dimenzion.Two)),
-            //    Task.Run(() => SomaAllToAll(Dimenzion.Ten)),
-            //    Task.Run(() => SomaAllToAll(Dimenzion.Thirty)),
-            //    Task.Run(() => SomaAllToOne(Dimenzion.Two)),
-            //    Task.Run(() => SomaAllToOne(Dimenzion.Ten)),
-            //    Task.Run(() => SomaAllToOne(Dimenzion.Thirty))
-            //};
+            var tasks = new List<Task<List<Result>>>
+            {
+                Task.Run(() => DERand(Dimenzion.Two)),
+                Task.Run(() => DERand(Dimenzion.Ten)),
+                Task.Run(() => DERand(Dimenzion.Thirty)),
+                Task.Run(() => DEBest(Dimenzion.Two)),
+                Task.Run(() => DEBest(Dimenzion.Ten)),
+                Task.Run(() => DEBest(Dimenzion.Thirty)),
+                Task.Run(() => PSO_(Dimenzion.Two)),
+                Task.Run(() => PSO_(Dimenzion.Ten)),
+                Task.Run(() => PSO_(Dimenzion.Thirty)),
+                Task.Run(() => SomaAllToAll(Dimenzion.Two)),
+                Task.Run(() => SomaAllToAll(Dimenzion.Ten)),
+                Task.Run(() => SomaAllToAll(Dimenzion.Thirty)),
+                Task.Run(() => SomaAllToOne(Dimenzion.Two)),
+                Task.Run(() => SomaAllToOne(Dimenzion.Ten)),
+                Task.Run(() => SomaAllToOne(Dimenzion.Thirty))
+            };
 
-            //var results = await Task.WhenAll(tasks);
+            var results = await Task.WhenAll(tasks);
 
-            //var resLst = results.ToList();
+            var resLst = results.ToList();
 
 
 
-            //var json = Newtonsoft.Json.JsonConvert.SerializeObject(resLst);
-            //File.WriteAllText("results.json", json);
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(resLst);
+            File.WriteAllText("results.json", json);
 
             var csvString = "sep=;" + System.Environment.NewLine;
             var stringResults = File.ReadAllText("results.json");
-            var results = Newtonsoft.Json.JsonConvert.DeserializeObject<List<List<Result>>>(stringResults);
+            var resultsJson = Newtonsoft.Json.JsonConvert.DeserializeObject<List<List<Result>>>(stringResults);
             string[,] valuesForCSV = new string[5, 25];
             for(int dim = 0; dim < 3; dim++)
             {
                 int vfCSVIndex = 0;
                 for (int row = dim; row <= 12+dim; row += 3)
                 {
-                    var temp = results[row];
+                    var temp = resultsJson[row];
                     for(int fIndex = 0; fIndex < 25; fIndex++)
                     {
                         valuesForCSV[vfCSVIndex, fIndex] = temp[fIndex].Fitness.Average().ToString();
